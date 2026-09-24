@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const { Pool } = require("pg");
+const path = require("path");
 
 const app = express();
+app.use(express.static(path.join(__dirname, "www")));
 
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -255,10 +257,8 @@ async function initDatabase() {
 // =====================================================
 
 app.get("/", (req, res) => {
-    res.json({
-        name: "NNR Server",
-        status: "online"
-    });
+    res.sendFile(path.join(__dirname, "www", "index.html"));
+});
 });
 
 // =====================================================
