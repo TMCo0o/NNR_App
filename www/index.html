@@ -1734,25 +1734,9 @@
            API CONFIGURATION
         ================================================= */
 
-        const API_BASE =
-            window.location.protocol === "file:"
-                ? "http://localhost:3000/api"
-                : (
-                    window.location.hostname === "localhost"
-                    || window.location.hostname === "127.0.0.1"
-                        ? "http://localhost:3000/api"
-                        : `http://${window.location.hostname}:3000/api`
-                );
+       const API_BASE = "https://nnr-app.onrender.com/api";
 
-
-        /*
-         * Capacitor Android normally reaches the computer's
-         * localhost through 10.0.2.2 when using the Android
-         * emulator.
-         */
-
-        const CAPACITOR_API =
-            "http://10.0.2.2:3000/api";
+const CAPACITOR_API = "https://nnr-app.onrender.com/api";
 
 
         function getAPI() {
