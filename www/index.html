@@ -1,0 +1,6432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050505"
+    >
+
+    <title>NNR</title>
+
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: #101010;
+            --panel-2: #171717;
+            --border: #292929;
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --accent: #ffffff;
+            --danger: #ff5c5c;
+            --success: #55d887;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .screen {
+            min-height: 100vh;
+        }
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        #authScreen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand img {
+            width: 92px;
+            height: 92px;
+            object-fit: cover;
+            border-radius: 18px;
+            display: block;
+            margin: 0 auto 14px;
+            border: 1px solid var(--border);
+            background: #0a0a0a;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .brand p {
+            margin: 6px 0 0;
+            color: var(--muted);
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .field input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            background: var(--panel-2);
+            color: var(--text);
+            outline: none;
+        }
+
+        .field input:focus {
+            border-color: #555;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .danger-btn,
+        .tile {
+            border: 0;
+            cursor: pointer;
+        }
+
+        .primary-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .secondary-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 13px;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .danger-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 13px;
+            background: #240d0d;
+            color: #ff9a9a;
+            border: 1px solid #4a1d1d;
+        }
+
+        .message {
+            min-height: 22px;
+            margin-top: 13px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .message.error {
+            color: var(--danger);
+        }
+
+        .message.success {
+            color: var(--success);
+        }
+
+        /* =========================
+           APP
+        ========================= */
+
+        #appScreen {
+            padding-bottom: 30px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 18px;
+            background: rgba(5, 5, 5, 0.94);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
+        }
+
+        .topbar img {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .topbar-title {
+            min-width: 0;
+        }
+
+        .topbar-title strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .topbar-title span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .user-pill {
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--muted);
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .content {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            margin-bottom: 18px;
+        }
+
+        .welcome h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .welcome p {
+            margin: 6px 0 0;
+            color: var(--muted);
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .tile {
+            text-align: left;
+            min-height: 120px;
+            padding: 18px;
+            border-radius: 17px;
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition:
+                transform 0.12s ease,
+                background 0.12s ease;
+        }
+
+        .tile:active {
+            transform: scale(0.98);
+        }
+
+        .tile:hover {
+            background: #151515;
+        }
+
+        .tile-icon {
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .tile-title {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .tile-sub {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+            line-height: 1.35;
+        }
+
+        /* =========================
+           INNER PAGES
+        ========================= */
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .page-head h2 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           WALLET
+        ========================= */
+
+        .balance-card {
+            text-align: center;
+            padding: 28px 18px;
+        }
+
+        .balance-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .balance {
+            font-size: 46px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .kk {
+            color: var(--muted);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .transaction {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction:last-child {
+            border-bottom: 0;
+        }
+
+        .transaction-name {
+            font-weight: 700;
+        }
+
+        .transaction-meta {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .transaction-amount {
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        .received {
+            color: var(--success);
+        }
+
+        .sent {
+            color: var(--danger);
+        }
+
+        .empty {
+            color: var(--muted);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* =========================
+           MODALS
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.72);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 430px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .modal-card h3 {
+            margin: 0 0 16px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+        }
+
+        /* =========================
+           NEWS
+        ========================= */
+
+        .news-item {
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-item:last-child {
+            border-bottom: 0;
+        }
+
+        .news-org {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .news-title {
+            font-size: 19px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .news-content {
+            white-space: pre-wrap;
+            line-height: 1.5;
+            margin-top: 9px;
+        }
+
+        /* =========================
+           ELECTIONS
+        ========================= */
+
+        .election-card {
+            cursor: pointer;
+        }
+
+        .election-card:hover {
+            background: #151515;
+        }
+
+        .election-position {
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .election-title {
+            font-size: 19px;
+            font-weight: 800;
+            margin: 5px 0 15px;
+        }
+
+        .election-preview {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .pie {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: auto;
+            background: #333;
+        }
+
+        .candidate-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .candidate-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .candidate-row:last-child {
+            border-bottom: 0;
+        }
+
+        .candidate-name {
+            font-weight: 700;
+        }
+
+        .candidate-votes {
+            color: var(--muted);
+        }
+
+        /* =========================
+           SETTINGS
+        ========================= */
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .theme-btn {
+            padding: 14px;
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* =========================
+           NOTIFICATIONS
+        ========================= */
+
+        .notification {
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 13px;
+            background: var(--panel-2);
+            border: 1px solid var(--border);
+        }
+
+        .notification.unread {
+            border-color: var(--accent);
+        }
+
+        .notification-title {
+            font-weight: 800;
+        }
+
+        .notification-message {
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 650px) {
+            .tiles {
+                grid-template-columns: 1fr;
+            }
+
+            .election-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .pie {
+                margin: 0 auto;
+            }
+
+            .auth-card {
+                padding: 22px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         AUTH SCREEN
+         ===================================================== -->
+
+    <section
+        id="authScreen"
+        class="screen"
+    >
+        <div class="auth-card">
+
+            <div class="brand">
+
+                <div
+                    id="logoContainer"
+                    class="hidden"
+                >
+                    <img
+                        id="nnrLogo"
+                        src=""
+                        alt="NNR"
+                    >
+                </div>
+
+                <h1>NNR</h1>
+
+                <p>
+                    New North Republic
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <div id="loginForm">
+
+                <div class="field">
+                    <label for="loginUsername">
+                        Username
+                    </label>
+
+                    <input
+                        id="loginUsername"
+                        type="text"
+                        autocomplete="username"
+                        placeholder="Username"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="loginPin">
+                        6-Digit Password / PIN
+                    </label>
+
+                    <input
+                        id="loginPin"
+                        type="password"
+                        inputmode="numeric"
+                        maxlength="6"
+                        autocomplete="current-password"
+                        placeholder="••••••"
+                    >
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    type="button"
+                    onclick="login()"
+                >
+                    Login
+                </button>
+
+
+                <button
+                    class="secondary-btn"
+                    type="button"
+                    onclick="showRegister()"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+
+            <!-- REGISTER -->
+
+            <div
+                id="registerForm"
+                class="hidden"
+            >
+
+                <div class="field">
+                    <label for="registerUsername">
+                        Username
+                    </label>
+
+                    <input
+                        id="registerUsername"
+                        type="text"
+                        autocomplete="username"
+                        maxlength="20"
+                        placeholder="Choose a username"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="registerFirstName">
+                        First Name
+                    </label>
+
+                    <input
+                        id="registerFirstName"
+                        type="text"
+                        maxlength="50"
+                        placeholder="First name"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="registerLastName">
+                        Last Name
+                    </label>
+
+                    <input
+                        id="registerLastName"
+                        type="text"
+                        maxlength="50"
+                        placeholder="Last name"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="registerAge">
+                        Age
+                    </label>
+
+                    <input
+                        id="registerAge"
+                        type="number"
+                        min="1"
+                        max="120"
+                        placeholder="Age"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="registerGender">
+                        Gender
+                    </label>
+
+                    <input
+                        id="registerGender"
+                        type="text"
+                        maxlength="30"
+                        placeholder="Gender"
+                    >
+                </div>
+
+
+                <div class="field">
+                    <label for="registerPin">
+                        6-Digit Password / PIN
+                    </label>
+
+                    <input
+                        id="registerPin"
+                        type="password"
+                        inputmode="numeric"
+                        maxlength="6"
+                        autocomplete="new-password"
+                        placeholder="••••••"
+                    >
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    type="button"
+                    onclick="register()"
+                >
+                    Create Account
+                </button>
+
+
+                <button
+                    class="secondary-btn"
+                    type="button"
+                    onclick="showLogin()"
+                >
+                    Back to Login
+                </button>
+
+            </div>
+
+
+            <div
+                id="authMessage"
+                class="message"
+            ></div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         MAIN APPLICATION
+         ===================================================== -->
+
+    <section
+        id="appScreen"
+        class="screen hidden"
+    >
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <img
+                    id="topLogo"
+                    src=""
+                    alt="NNR"
+                >
+
+                <div class="topbar-title">
+
+                    <strong>
+                        NNR
+                    </strong>
+
+                    <span>
+                        New North Republic
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="userPill"
+                class="user-pill"
+            >
+                Not logged in
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HOME PAGE
+             ================================================= -->
+
+        <main
+            id="homePage"
+            class="page active"
+        >
+
+            <div class="content">
+
+                <div class="welcome">
+
+                    <h2 id="welcomeName">
+                        Welcome
+                    </h2>
+
+                    <p>
+                        New North Republic
+                    </p>
+
+                </div>
+
+
+                <div class="tiles">
+
+
+                    <!-- KK -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="openWallet()"
+                    >
+
+                        <div class="tile-icon">
+                            💰
+                        </div>
+
+                        <div class="tile-title">
+                            KK Wallet
+                        </div>
+
+                        <div class="tile-sub">
+                            View your balance,
+                            transactions,
+                            and KK requests.
+                        </div>
+
+                    </button>
+
+
+                    <!-- NEWS -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="openNews()"
+                    >
+
+                        <div class="tile-icon">
+                            📰
+                        </div>
+
+                        <div class="tile-title">
+                            NNR News
+                        </div>
+
+                        <div class="tile-sub">
+                            Read the latest
+                            articles and reports.
+                        </div>
+
+                    </button>
+
+
+                    <!-- ELECTIONS -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="openElections()"
+                    >
+
+                        <div class="tile-icon">
+                            🗳️
+                        </div>
+
+                        <div class="tile-title">
+                            Elections
+                        </div>
+
+                        <div class="tile-sub">
+                            View current elections,
+                            candidates, and results.
+                        </div>
+
+                    </button>
+
+
+                    <!-- NOTIFICATIONS -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="openNotifications()"
+                    >
+
+                        <div class="tile-icon">
+                            🔔
+                        </div>
+
+                        <div class="tile-title">
+                            Notifications
+                        </div>
+
+                        <div
+                            id="notificationTileSub"
+                            class="tile-sub"
+                        >
+                            View your notifications.
+                        </div>
+
+                    </button>
+
+
+                    <!-- SETTINGS -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="openSettings()"
+                    >
+
+                        <div class="tile-icon">
+                            ⚙️
+                        </div>
+
+                        <div class="tile-title">
+                            Settings
+                        </div>
+
+                        <div class="tile-sub">
+                            Account and appearance
+                            settings.
+                        </div>
+
+                    </button>
+
+
+                    <!-- GOVERNMENT -->
+
+                    <button
+                        id="governmentTile"
+                        class="tile hidden"
+                        type="button"
+                        onclick="openGovernment()"
+                    >
+
+                        <div class="tile-icon">
+                            🏛️
+                        </div>
+
+                        <div class="tile-title">
+                            Government
+                        </div>
+
+                        <div class="tile-sub">
+                            NNR government
+                            administration.
+                        </div>
+
+                    </button>
+
+
+                    <!-- LOGOUT -->
+
+                    <button
+                        class="tile"
+                        type="button"
+                        onclick="logout()"
+                    >
+
+                        <div class="tile-icon">
+                            🚪
+                        </div>
+
+                        <div class="tile-title">
+                            Log Out
+                        </div>
+
+                        <div class="tile-sub">
+                            Sign out of this account.
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+
+        <!-- =================================================
+             WALLET PAGE
+             ================================================= -->
+
+        <section
+            id="walletPage"
+            class="page"
+        >
+
+            <div class="content">
+
+                <div class="page-head">
+
+                    <button
+                        class="back-btn"
+                        type="button"
+                        onclick="showPage('homePage')"
+                    >
+                        ←
+                    </button>
+
+                    <h2>
+                        KK Wallet
+                    </h2>
+
+                </div>
+
+
+                <!-- BALANCE -->
+
+                <div class="card balance-card">
+
+                    <div class="balance-label">
+                        Current Balance
+                    </div>
+
+                    <div
+                        id="walletBalance"
+                        class="balance"
+                    >
+                        0
+                    </div>
+
+                    <div class="kk">
+                        KK
+                    </div>
+
+                </div>
+
+
+                <!-- TRANSFER -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Send Kiv Kell
+                    </div>
+
+                    <div class="field">
+
+                        <label for="transferUsername">
+                            Recipient Username
+                        </label>
+
+                        <input
+                            id="transferUsername"
+                            type="text"
+                            placeholder="@username"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="transferAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            id="transferAmount"
+                            type="number"
+                            min="1"
+                            step="1"
+                            placeholder="Amount"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        type="button"
+                        onclick="sendKK()"
+                    >
+                        Send KK
+                    </button>
+
+                </div>
+
+
+                <!-- REQUEST -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Request Kiv Kell
+                    </div>
+
+                    <div class="field">
+
+                        <label for="requestUsername">
+                            Request From
+                        </label>
+
+                        <input
+                            id="requestUsername"
+                            type="text"
+                            placeholder="@username"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="requestAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            id="requestAmount"
+                            type="number"
+                            min="1"
+                            step="1"
+                            placeholder="Amount"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="secondary-btn"
+                        type="button"
+                        onclick="requestKK()"
+                    >
+                        Request KK
+                    </button>
+
+                </div>
+
+
+                <!-- REQUESTS -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Incoming KK Requests
+                    </div>
+
+                    <div
+                        id="kkRequestsList"
+                    >
+                        <div class="empty">
+                            No requests.
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- LAST FIVE -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Last 5 Transactions
+                    </div>
+
+                    <div
+                        id="transactionsList"
+                    >
+                        <div class="empty">
+                            No transactions yet.
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NEWS PAGE
+             ================================================= -->
+
+        <section
+            id="newsPage"
+            class="page"
+        >
+
+            <div class="content">
+
+                <div class="page-head">
+
+                    <button
+                        class="back-btn"
+                        type="button"
+                        onclick="showPage('homePage')"
+                    >
+                        ←
+                    </button>
+
+                    <h2>
+                        NNR News
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="newsList"
+                    class="card"
+                >
+                    <div class="empty">
+                        Loading news...
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ELECTIONS PAGE
+             ================================================= -->
+
+        <section
+            id="electionsPage"
+            class="page"
+        >
+
+            <div class="content">
+
+                <div class="page-head">
+
+                    <button
+                        class="back-btn"
+                        type="button"
+                        onclick="showPage('homePage')"
+                    >
+                        ←
+                    </button>
+
+                    <h2>
+                        Elections
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="electionsList"
+                >
+                    <div class="card empty">
+                        Loading elections...
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NOTIFICATIONS PAGE
+             ================================================= -->
+
+        <section
+            id="notificationsPage"
+            class="page"
+        >
+
+            <div class="content">
+
+                <div class="page-head">
+
+                    <button
+                        class="back-btn"
+                        type="button"
+                        onclick="showPage('homePage')"
+                    >
+                        ←
+                    </button>
+
+                    <h2>
+                        Notifications
+                    </h2>
+
+                </div>
+
+
+                <div
+                    id="notificationsList"
+                >
+                    <div class="card empty">
+                        Loading notifications...
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SETTINGS PAGE
+             ================================================= -->
+
+        <section
+            id="settingsPage"
+            class="page"
+        >
+
+            <div class="content">
+
+                <div class="page-head">
+
+                    <button
+                        class="back-btn"
+                        type="button"
+                        onclick="showPage('homePage')"
+                    >
+                        ←
+                    </button>
+
+                    <h2>
+                        Settings
+                    </h2>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Appearance
+                    </div>
+
+                    <p class="nnr-small">
+                        Choose your NNR theme.
+                    </p>
+
+                    <div
+                        id="themeGrid"
+                        class="theme-grid"
+                    >
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('black')"
+                        >
+                            Black
+                        </button>
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('white')"
+                        >
+                            White
+                        </button>
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('maroon')"
+                        >
+                            Maroon
+                        </button>
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('blue')"
+                        >
+                            Dark Blue
+                        </button>
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('purple')"
+                        >
+                            Purple
+                        </button>
+
+                        <button
+                            class="theme-btn"
+                            onclick="setTheme('grey')"
+                        >
+                            Grey
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Account
+                    </div>
+
+                    <div class="field">
+
+                        <label for="newUsername">
+                            Change Username
+                        </label>
+
+                        <input
+                            id="newUsername"
+                            type="text"
+                            maxlength="20"
+                            placeholder="New username"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="secondary-btn"
+                        type="button"
+                        onclick="changeUsername()"
+                    >
+                        Change Username
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+    <!-- =====================================================
+         GOVERNMENT PAGE
+         ===================================================== -->
+
+    <section
+        id="governmentPage"
+        class="page hidden"
+    >
+
+        <div class="content">
+
+            <div class="page-head">
+                <button
+                    class="back-btn"
+                    type="button"
+                    onclick="showPage('homePage')"
+                >←</button>
+                <h2>Government</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Government Actions</div>
+                <button class="primary-btn" type="button" onclick="governmentPostNews()">📰 Publish News</button>
+                <button class="primary-btn" type="button" onclick="governmentCreateElection()">🗳️ Create Election</button>
+                <button class="primary-btn" type="button" onclick="governmentSendNotification()">🔔 Send Notification</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">KK Controls</div>
+                <button class="primary-btn" type="button" onclick="governmentGiveKK()">💰 Give KK</button>
+                <button class="secondary-btn" type="button" onclick="governmentTakeKK()">💸 Take KK</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Members</div>
+                <div id="governmentMemberList"><div class="empty">Loading members...</div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Elections</div>
+                <div id="governmentElectionList"><div class="empty">Loading elections...</div></div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KK REQUEST MODAL
+         ===================================================== -->
+
+    <div
+        id="requestDetailModal"
+        class="modal"
+    >
+
+        <div class="modal-card">
+
+            <h3>
+                KK Request
+            </h3>
+
+            <div
+                id="requestDetailText"
+            >
+                KK request details
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="primary-btn"
+                    type="button"
+                    onclick="acceptCurrentRequest()"
+                >
+                    Accept
+                </button>
+
+                <button
+                    class="secondary-btn"
+                    type="button"
+                    onclick="closeModal('requestDetailModal')"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ELECTION DETAIL MODAL
+         ===================================================== -->
+
+    <div
+        id="electionDetailModal"
+        class="modal"
+    >
+
+        <div
+            class="modal-card"
+            style="max-width:700px;"
+        >
+
+            <h3
+                id="electionDetailTitle"
+            >
+                Election
+            </h3>
+
+            <div
+                id="electionDetailContent"
+            >
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-btn"
+                    type="button"
+                    onclick="closeModal('electionDetailModal')"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         GENERIC MESSAGE MODAL
+         ===================================================== -->
+
+    <div
+        id="messageModal"
+        class="modal"
+    >
+
+        <div class="modal-card">
+
+            <h3
+                id="messageModalTitle"
+            >
+                NNR
+            </h3>
+
+            <div
+                id="messageModalText"
+            >
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    class="primary-btn"
+                    type="button"
+                    onclick="closeModal('messageModal')"
+                >
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         APPLICATION JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+        /* =================================================
+           API CONFIGURATION
+        ================================================= */
+
+        const API_BASE =
+            window.location.protocol === "file:"
+                ? "http://localhost:3000/api"
+                : (
+                    window.location.hostname === "localhost"
+                    || window.location.hostname === "127.0.0.1"
+                        ? "http://localhost:3000/api"
+                        : `http://${window.location.hostname}:3000/api`
+                );
+
+
+        /*
+         * Capacitor Android normally reaches the computer's
+         * localhost through 10.0.2.2 when using the Android
+         * emulator.
+         */
+
+        const CAPACITOR_API =
+            "http://10.0.2.2:3000/api";
+
+
+        function getAPI() {
+
+            const isAndroid =
+                /Android/i.test(
+                    navigator.userAgent
+                );
+
+            if (isAndroid) {
+                return CAPACITOR_API;
+            }
+
+            return API_BASE;
+        }
+
+
+        const API =
+            getAPI();
+
+
+        /* =================================================
+           STATE
+        ================================================= */
+
+        let currentUser = null;
+
+        let currentRequest = null;
+
+        let allElections = [];
+
+        let allNews = [];
+
+        let allNotifications = [];
+
+        let allTransactions = [];
+
+
+        /* =================================================
+           DOM HELPERS
+        ================================================= */
+
+        function $(id) {
+
+            return document.getElementById(id);
+
+        }
+
+
+        function show(id) {
+
+            const element =
+                $(id);
+
+            if (element) {
+                element.classList.remove(
+                    "hidden"
+                );
+            }
+
+        }
+
+
+        function hide(id) {
+
+            const element =
+                $(id);
+
+            if (element) {
+                element.classList.add(
+                    "hidden"
+                );
+            }
+
+        }
+
+
+        function showPage(id) {
+
+            document
+                .querySelectorAll(
+                    ".page"
+                )
+                .forEach(
+                    page =>
+                        page.classList.remove(
+                            "active"
+                        )
+                );
+
+
+            const page =
+                $(id);
+
+            if (page) {
+                page.classList.add(
+                    "active"
+                );
+            }
+
+
+            window.scrollTo(
+                {
+                    top:0,
+                    behavior:"smooth"
+                }
+            );
+
+        }
+
+
+        function closeModal(id) {
+
+            const modal =
+                $(id);
+
+            if (modal) {
+                modal.classList.remove(
+                    "show"
+                );
+            }
+
+        }
+
+
+        function openModal(id) {
+
+            const modal =
+                $(id);
+
+            if (modal) {
+                modal.classList.add(
+                    "show"
+                );
+            }
+
+        }
+
+
+        /* =================================================
+           SAFE HTML
+        ================================================= */
+
+        function escapeHTML(value) {
+
+            return String(
+                value ?? ""
+            )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+        }
+
+
+        /* =================================================
+           LOCAL STORAGE
+        ================================================= */
+
+        function saveUser() {
+
+            if (!currentUser) {
+                localStorage.removeItem(
+                    "nnr_user"
+                );
+                return;
+            }
+
+
+            localStorage.setItem(
+                "nnr_user",
+                JSON.stringify(
+                    currentUser
+                )
+            );
+
+        }
+
+
+        function loadSavedUser() {
+
+            try {
+
+                const saved =
+                    localStorage.getItem(
+                        "nnr_user"
+                    );
+
+
+                if (!saved) {
+                    return null;
+                }
+
+
+                return JSON.parse(
+                    saved
+                );
+
+            } catch {
+
+                return null;
+
+            }
+
+        }
+
+
+        /* =================================================
+           AUTH MESSAGE
+        ================================================= */
+
+        function setAuthMessage(
+            message,
+            type = ""
+        ) {
+
+            const element =
+                $("authMessage");
+
+
+            if (!element) {
+                return;
+            }
+
+
+            element.textContent =
+                message;
+
+
+            element.className =
+                "message";
+
+
+            if (type) {
+                element.classList.add(
+                    type
+                );
+            }
+
+        }
+
+
+        /* =================================================
+           LOGIN / REGISTER UI
+        ================================================= */
+
+        function showRegister() {
+
+            hide("loginForm");
+            show("registerForm");
+
+            setAuthMessage("");
+
+        }
+
+
+        function showLogin() {
+
+            show("loginForm");
+            hide("registerForm");
+
+            setAuthMessage("");
+
+        }
+
+
+        /* =================================================
+           API FETCH
+        ================================================= */
+
+        async function apiFetch(
+            endpoint,
+            options = {}
+        ) {
+
+            const config = {
+                ...options,
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    ...(options.headers || {})
+                }
+            };
+
+
+            const response =
+                await fetch(
+                    `${API}${endpoint}`,
+                    config
+                );
+
+
+            let data = {};
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch {
+
+                data = {};
+
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    `Server error ${response.status}`
+                );
+
+            }
+
+
+            return data;
+
+        }
+
+
+        /* =================================================
+           REGISTER
+        ================================================= */
+
+        async function register() {
+
+            const username =
+                $("registerUsername")
+                    .value
+                    .trim();
+
+
+            const firstName =
+                $("registerFirstName")
+                    .value
+                    .trim();
+
+
+            const lastName =
+                $("registerLastName")
+                    .value
+                    .trim();
+
+
+            const age =
+                Number(
+                    $("registerAge")
+                        .value
+                );
+
+
+            const gender =
+                $("registerGender")
+                    .value
+                    .trim();
+
+
+            const pin =
+                $("registerPin")
+                    .value
+                    .trim();
+
+
+            if (
+                !username ||
+                !firstName ||
+                !lastName ||
+                !age ||
+                !gender ||
+                !pin
+            ) {
+
+                setAuthMessage(
+                    "Fill in every field.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^[a-zA-Z0-9_]{3,20}$/
+                    .test(username)
+            ) {
+
+                setAuthMessage(
+                    "Username must be 3–20 letters, numbers, or underscores.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^\d{6}$/.test(pin)
+            ) {
+
+                setAuthMessage(
+                    "Password / PIN must be exactly 6 numbers.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                setAuthMessage(
+                    "Creating account..."
+                );
+
+
+                await apiFetch(
+                    "/register",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    username,
+                                    firstName,
+                                    lastName,
+                                    age,
+                                    gender,
+                                    pin
+                                }
+                            )
+                    }
+                );
+
+
+                setAuthMessage(
+                    "Account created. You can now log in.",
+                    "success"
+                );
+
+
+                $("loginUsername")
+                    .value =
+                    username;
+
+
+                $("loginPin")
+                    .value =
+                    "";
+
+
+                showLogin();
+
+                setAuthMessage(
+                    "Account created. Log in below.",
+                    "success"
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                setAuthMessage(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           LOGIN
+        ================================================= */
+
+        async function login() {
+
+            const username =
+                $("loginUsername")
+                    .value
+                    .trim();
+
+
+            const pin =
+                $("loginPin")
+                    .value
+                    .trim();
+
+
+            if (
+                !username ||
+                !pin
+            ) {
+
+                setAuthMessage(
+                    "Enter your username and 6-digit PIN.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !/^\d{6}$/.test(pin)
+            ) {
+
+                setAuthMessage(
+                    "PIN must be exactly 6 numbers.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                setAuthMessage(
+                    "Logging in..."
+                );
+
+
+                const data =
+                    await apiFetch(
+                        "/login",
+                        {
+                            method:"POST",
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        username,
+                                        pin
+                                    }
+                                )
+                        }
+                    );
+
+
+                currentUser =
+                    data.user;
+
+
+                saveUser();
+
+
+                enterApplication();
+
+            } catch (error) {
+
+                console.error(error);
+
+                setAuthMessage(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           ENTER APPLICATION
+        ================================================= */
+
+        function enterApplication() {
+
+            hide("authScreen");
+            show("appScreen");
+
+
+            updateUserUI();
+
+            loadTheme();
+
+            showPage(
+                "homePage"
+            );
+
+
+            refreshAll();
+
+        }
+
+
+        /* =================================================
+           USER UI
+        ================================================= */
+
+        function updateUserUI() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const displayName =
+                currentUser.firstName ||
+                currentUser.username;
+
+
+            $("welcomeName")
+                .textContent =
+                `Welcome, ${displayName}`;
+
+
+            $("userPill")
+                .textContent =
+                `@${currentUser.username}`;
+
+
+            if (
+                currentUser.username ===
+                "Government" &&
+                currentUser.isAdmin
+            ) {
+
+                show(
+                    "governmentTile"
+                );
+
+            } else {
+
+                hide(
+                    "governmentTile"
+                );
+
+            }
+
+
+            updateWalletBalance();
+
+        }
+
+
+        function updateWalletBalance() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const balance =
+                currentUser.username ===
+                    "Government" &&
+                currentUser.isAdmin
+                    ? "∞"
+                    : Number(
+                        currentUser.balance ||
+                        0
+                    ).toLocaleString();
+
+
+            $("walletBalance")
+                .textContent =
+                balance;
+
+        }
+
+
+        /* =================================================
+           LOGOUT
+        ================================================= */
+
+        function logout() {
+
+            currentUser = null;
+
+            localStorage.removeItem(
+                "nnr_user"
+            );
+
+
+            hide("appScreen");
+            show("authScreen");
+
+
+            showLogin();
+
+
+            $("loginUsername")
+                .value = "";
+
+            $("loginPin")
+                .value = "";
+
+
+            setAuthMessage("");
+
+        }
+
+
+        /* =================================================
+           REFRESH USER
+        ================================================= */
+
+        async function refreshUser() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/user/${currentUser.id}`
+                    );
+
+
+                currentUser =
+                    data.user;
+
+
+                saveUser();
+
+                updateUserUI();
+
+            } catch (error) {
+
+                console.error(
+                    "User refresh failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           MASTER REFRESH
+        ================================================= */
+
+        async function refreshAll() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            await refreshUser();
+
+
+            await Promise.all(
+                [
+                    loadNews(),
+                    loadElections(),
+                    loadTransactions(),
+                    loadKKRequests(),
+                    loadNotifications()
+                ]
+            );
+
+        }
+
+
+        /* =================================================
+           WALLET PAGE
+        ================================================= */
+
+        async function openWallet() {
+
+            showPage(
+                "walletPage"
+            );
+
+
+            updateWalletBalance();
+
+
+            await Promise.all(
+                [
+                    loadTransactions(),
+                    loadKKRequests()
+                ]
+            );
+
+        }
+
+
+        /* =================================================
+           SEND KK
+        ================================================= */
+
+        async function sendKK() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const username =
+                $("transferUsername")
+                    .value
+                    .trim();
+
+
+            const amount =
+                Number(
+                    $("transferAmount")
+                        .value
+                );
+
+
+            if (!username) {
+
+                alert(
+                    "Enter a recipient username."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isInteger(amount) ||
+                amount <= 0
+            ) {
+
+                alert(
+                    "Enter a valid whole-number KK amount."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/transfer",
+                        {
+                            method:"POST",
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        senderId:
+                                            currentUser.id,
+
+                                        receiverUsername:
+                                            username,
+
+                                        amount
+                                    }
+                                )
+                        }
+                    );
+
+
+                $("transferUsername")
+                    .value = "";
+
+                $("transferAmount")
+                    .value = "";
+
+
+                await refreshUser();
+
+                await loadTransactions();
+
+
+                alert(
+                    data.message ||
+                    "KK sent."
+                );
+
+            } catch (error) {
+
+                alert(
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           REQUEST KK
+        ================================================= */
+
+        async function requestKK() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const username =
+                $("requestUsername")
+                    .value
+                    .trim();
+
+
+            const amount =
+                Number(
+                    $("requestAmount")
+                        .value
+                );
+
+
+            if (!username) {
+
+                alert(
+                    "Enter the username to request KK from."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isInteger(amount) ||
+                amount <= 0
+            ) {
+
+                alert(
+                    "Enter a valid whole-number KK amount."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/kk/request",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    requesterId:
+                                        currentUser.id,
+
+                                    targetUsername:
+                                        username,
+
+                                    amount
+                                }
+                            )
+                    }
+                );
+
+
+                $("requestUsername")
+                    .value = "";
+
+                $("requestAmount")
+                    .value = "";
+
+
+                alert(
+                    "KK request sent."
+                );
+
+
+                await loadKKRequests();
+
+            } catch (error) {
+
+                alert(
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           TRANSACTIONS
+        ================================================= */
+
+        async function loadTransactions() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/transactions/${currentUser.id}`
+                    );
+
+
+                allTransactions =
+                    data.transactions ||
+                    [];
+
+
+                renderTransactions();
+
+            } catch (error) {
+
+                console.error(
+                    "Transactions:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function renderTransactions() {
+
+            const container =
+                $("transactionsList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (
+                !allTransactions.length
+            ) {
+
+                container.innerHTML =
+                    `<div class="empty">
+                        No transactions yet.
+                    </div>`;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                allTransactions
+                    .map(
+                        transaction => {
+
+                            const incoming =
+                                Number(
+                                    transaction.receiver_id
+                                ) ===
+                                Number(
+                                    currentUser.id
+                                );
+
+
+                            const other =
+                                incoming
+                                    ? transaction.sender_username
+                                    : transaction.receiver_username;
+
+
+                            const sign =
+                                incoming
+                                    ? "+"
+                                    : "-";
+
+
+                            const className =
+                                incoming
+                                    ? "received"
+                                    : "sent";
+
+
+                            return `
+                                <div class="transaction">
+
+                                    <div>
+
+                                        <div class="transaction-name">
+                                            ${
+                                                incoming
+                                                    ? "From "
+                                                    : "To "
+                                            }@${escapeHTML(
+                                                other ||
+                                                "Government"
+                                            )}
+                                        </div>
+
+                                        <div class="transaction-meta">
+                                            ${escapeHTML(
+                                                transaction.type ||
+                                                "transfer"
+                                            )}
+                                        </div>
+
+                                    </div>
+
+                                    <div
+                                        class="transaction-amount ${className}"
+                                    >
+                                        ${sign}${Number(
+                                            transaction.amount
+                                        ).toLocaleString()}
+                                        KK
+                                    </div>
+
+                                </div>
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+        /* =================================================
+           KK REQUESTS
+        ================================================= */
+
+        async function loadKKRequests() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/kk/requests/${currentUser.id}`
+                    );
+
+
+                renderKKRequests(
+                    data.requests || []
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "KK requests:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function renderKKRequests(
+            requests
+        ) {
+
+            const container =
+                $("kkRequestsList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!requests.length) {
+
+                container.innerHTML =
+                    `<div class="empty">
+                        No pending KK requests.
+                    </div>`;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                requests
+                    .map(
+                        request => `
+
+                            <div
+                                class="card"
+                                style="margin-bottom:10px;"
+                            >
+
+                                <div class="card-title">
+                                    KK Request
+                                </div>
+
+                                <strong>
+                                    @${escapeHTML(
+                                        request.requester_username
+                                    )}
+                                </strong>
+
+                                <p>
+                                    Requested
+                                    <strong>
+                                        ${Number(
+                                            request.amount
+                                        ).toLocaleString()} KK
+                                    </strong>
+                                </p>
+
+                                <button
+                                    class="primary-btn"
+                                    type="button"
+                                    onclick="openRequest(${request.id}, '${escapeHTML(request.requester_username)}', ${Number(request.amount)})"
+                                >
+                                    Review Request
+                                </button>
+
+                            </div>
+
+                        `
+                    )
+                    .join("");
+
+        }
+
+
+        function openRequest(
+            id,
+            username,
+            amount
+        ) {
+
+            currentRequest = {
+                id,
+                username,
+                amount
+            };
+
+
+            $("requestDetailText")
+                .innerHTML = `
+
+                    <p>
+                        <strong>
+                            @${escapeHTML(username)}
+                        </strong>
+                        requested
+                        <strong>
+                            ${Number(
+                                amount
+                            ).toLocaleString()} KK
+                        </strong>
+                        from you.
+                    </p>
+
+                `;
+
+
+            openModal(
+                "requestDetailModal"
+            );
+
+        }
+
+
+        async function acceptCurrentRequest() {
+
+            if (!currentRequest) {
+                return;
+            }
+
+
+            try {
+
+                await apiFetch(
+                    `/kk/request/${currentRequest.id}/respond`,
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    userId:
+                                        currentUser.id,
+
+                                    action:
+                                        "accept"
+                                }
+                            )
+                    }
+                );
+
+
+                closeModal(
+                    "requestDetailModal"
+                );
+
+
+                currentRequest =
+                    null;
+
+
+                await refreshUser();
+
+                await loadTransactions();
+
+                await loadKKRequests();
+
+
+                showMessage(
+                    "KK Request",
+                    "KK request accepted."
+                );
+
+            } catch (error) {
+
+                showMessage(
+                    "KK Request",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           NEWS
+        ================================================= */
+
+        async function openNews() {
+
+            showPage(
+                "newsPage"
+            );
+
+
+            await loadNews();
+
+        }
+
+
+        async function loadNews() {
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/news"
+                    );
+
+
+                allNews =
+                    data.news || [];
+
+
+                renderNews();
+
+            } catch (error) {
+
+                console.error(
+                    "News:",
+                    error
+                );
+
+
+                const container =
+                    $("newsList");
+
+
+                if (container) {
+
+                    container.innerHTML =
+                        `
+                            <div class="empty">
+                                Could not load news.
+                            </div>
+                        `;
+
+                }
+
+            }
+
+        }
+
+
+        function renderNews() {
+
+            const container =
+                $("newsList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!allNews.length) {
+
+                container.innerHTML =
+                    `
+                        <div class="empty">
+                            No news has been published yet.
+                        </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                allNews
+                    .map(
+                        article => `
+
+                            <article
+                                class="news-item"
+                            >
+
+                                <div
+                                    class="news-org"
+                                >
+                                    ${escapeHTML(
+                                        article.organization
+                                    )}
+                                </div>
+
+                                <div
+                                    class="news-title"
+                                >
+                                    ${escapeHTML(
+                                        article.title
+                                    )}
+                                </div>
+
+                                <div
+                                    class="news-content"
+                                >
+                                    ${escapeHTML(
+                                        article.content
+                                    )}
+                                </div>
+
+                                <div
+                                    class="nnr-small"
+                                    style="margin-top:10px;"
+                                >
+                                    ${formatDate(
+                                        article.created_at
+                                    )}
+                                </div>
+
+                            </article>
+
+                        `
+                    )
+                    .join("");
+
+        }
+
+
+        /* =================================================
+           ELECTIONS
+        ================================================= */
+
+        async function openElections() {
+
+            showPage(
+                "electionsPage"
+            );
+
+
+            await loadElections();
+
+        }
+
+
+        async function loadElections() {
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/elections"
+                    );
+
+
+                allElections =
+                    data.elections || [];
+
+
+                renderElections();
+
+            } catch (error) {
+
+                console.error(
+                    "Elections:",
+                    error
+                );
+
+
+                const container =
+                    $("electionsList");
+
+
+                if (container) {
+
+                    container.innerHTML =
+                        `
+                            <div class="card empty">
+                                Could not load elections.
+                            </div>
+                        `;
+
+                }
+
+            }
+
+        }
+
+
+        function calculateElectionData(
+            election
+        ) {
+
+            const candidates =
+                election.candidates || [];
+
+
+            const total =
+                candidates.reduce(
+                    (
+                        sum,
+                        candidate
+                    ) =>
+                        sum +
+                        Number(
+                            candidate.vote_count
+                        ),
+                    0
+                );
+
+
+            return {
+                candidates,
+                total
+            };
+
+        }
+
+
+        function buildPieGradient(
+            candidates,
+            total
+        ) {
+
+            if (
+                !candidates.length ||
+                total <= 0
+            ) {
+
+                return "#303030";
+
+            }
+
+
+            let current =
+                0;
+
+
+            const sections =
+                candidates.map(
+                    (
+                        candidate,
+                        index
+                    ) => {
+
+                        const votes =
+                            Number(
+                                candidate.vote_count
+                            ) || 0;
+
+
+                        const percentage =
+                            (
+                                votes /
+                                total
+                            ) * 100;
+
+
+                        const start =
+                            current;
+
+
+                        current +=
+                            percentage;
+
+
+                        /*
+                         * Different candidates get
+                         * different neutral shades.
+                         * This keeps the chart readable
+                         * without depending on fixed
+                         * party colors.
+                         */
+
+                        const shade =
+                            35 +
+                            (
+                                index *
+                                13
+                            );
+
+
+                        return `
+                            rgb(
+                                ${shade},
+                                ${shade},
+                                ${shade}
+                            )
+                            ${start}%
+                            ${current}%
+                        `;
+
+                    }
+                );
+
+
+            return `
+                conic-gradient(
+                    ${sections.join(",")}
+                )
+            `;
+
+        }
+
+
+        function renderElections() {
+
+            const container =
+                $("electionsList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (!allElections.length) {
+
+                container.innerHTML =
+                    `
+                        <div class="card empty">
+                            No elections are currently available.
+                        </div>
+                    `;
+
+                return;
+
+            }
+
+
+            container.innerHTML =
+                allElections
+                    .map(
+                        election => {
+
+                            const {
+                                candidates,
+                                total
+                            } =
+                                calculateElectionData(
+                                    election
+                                );
+
+
+                            const pie =
+                                buildPieGradient(
+                                    candidates,
+                                    total
+                                );
+
+
+                            return `
+
+                                <div
+                                    class="card election-card"
+                                    onclick="openElectionDetail(${election.id})"
+                                >
+
+                                    <div
+                                        class="election-position"
+                                    >
+                                        ${escapeHTML(
+                                            election.position
+                                        )}
+                                    </div>
+
+                                    <div
+                                        class="election-title"
+                                    >
+                                        ${escapeHTML(
+                                            election.title
+                                        )}
+                                    </div>
+
+
+                                    <div
+                                        class="election-preview"
+                                    >
+
+                                        <div
+                                            class="pie"
+                                            style="background:${pie};"
+                                        >
+                                        </div>
+
+
+                                        <div
+                                            class="candidate-list"
+                                        >
+
+                                            ${
+                                                candidates
+                                                    .map(
+                                                        candidate => {
+
+                                                            const percentage =
+                                                                total > 0
+                                                                    ? (
+                                                                        Number(
+                                                                            candidate.vote_count
+                                                                        ) /
+                                                                        total
+                                                                    ) *
+                                                                    100
+                                                                    : 0;
+
+
+                                                            return `
+
+                                                                <div
+                                                                    class="candidate-row"
+                                                                >
+
+                                                                    <div>
+
+                                                                        <div
+                                                                            class="candidate-name"
+                                                                        >
+                                                                            ${escapeHTML(
+                                                                                candidate.name
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div
+                                                                            class="nnr-small"
+                                                                        >
+                                                                            ${percentage.toFixed(1)}%
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="candidate-votes"
+                                                                    >
+                                                                        ${Number(
+                                                                            candidate.vote_count
+                                                                        ).toLocaleString()}
+                                                                    </div>
+
+                                                                </div>
+
+                                                            `;
+
+                                                        }
+                                                    )
+                                                    .join("")
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+        async function openElectionDetail(
+            electionId
+        ) {
+
+            const election =
+                allElections.find(
+                    item =>
+                        Number(item.id) ===
+                        Number(electionId)
+                );
+
+
+            if (!election) {
+                return;
+            }
+
+
+            const {
+                candidates,
+                total
+            } =
+                calculateElectionData(
+                    election
+                );
+
+
+            const pie =
+                buildPieGradient(
+                    candidates,
+                    total
+                );
+
+
+            $("electionDetailTitle")
+                .textContent =
+                election.title;
+
+
+            $("electionDetailContent")
+                .innerHTML = `
+
+                    <div
+                        class="nnr-pie-wrap"
+                    >
+
+                        <div>
+
+                            <div
+                                class="pie"
+                                style="
+                                    width:220px;
+                                    height:220px;
+                                    background:${pie};
+                                "
+                            >
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                class="election-position"
+                            >
+                                Position
+                            </div>
+
+                            <h3>
+                                ${escapeHTML(
+                                    election.position
+                                )}
+                            </h3>
+
+                            <p
+                                class="nnr-small"
+                            >
+                                Total votes:
+                                ${Number(
+                                    total
+                                ).toLocaleString()}
+                            </p>
+
+
+                            <div
+                                class="candidate-list"
+                            >
+
+                                ${
+                                    candidates
+                                        .map(
+                                            candidate => {
+
+                                                const percentage =
+                                                    total > 0
+                                                        ? (
+                                                            Number(
+                                                                candidate.vote_count
+                                                            ) /
+                                                            total
+                                                        ) *
+                                                        100
+                                                        : 0;
+
+
+                                                return `
+
+                                                    <div
+                                                        class="candidate-row"
+                                                    >
+
+                                                        <div>
+
+                                                            <div
+                                                                class="candidate-name"
+                                                            >
+                                                                ${escapeHTML(
+                                                                    candidate.name
+                                                                )}
+                                                            </div>
+
+                                                            <div
+                                                                class="nnr-small"
+                                                            >
+                                                                Running for:
+                                                                ${escapeHTML(
+                                                                    election.position
+                                                                )}
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div
+                                                            class="candidate-votes"
+                                                        >
+                                                            ${percentage.toFixed(1)}%
+                                                        </div>
+
+                                                    </div>
+
+                                                `;
+
+                                            }
+                                        )
+                                        .join("")
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+            openModal(
+                "electionDetailModal"
+            );
+
+        }
+
+
+        /* =================================================
+           NOTIFICATIONS
+        ================================================= */
+
+        async function openNotifications() {
+
+            showPage(
+                "notificationsPage"
+            );
+
+
+            await loadNotifications();
+
+        }
+
+
+        async function loadNotifications() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/notifications/${currentUser.id}`
+                    );
+
+
+                allNotifications =
+                    data.notifications || [];
+
+
+                renderNotifications();
+
+            } catch (error) {
+
+                console.error(
+                    "Notifications:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        function renderNotifications() {
+
+            const container =
+                $("notificationsList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            if (
+                !allNotifications.length
+            ) {
+
+                container.innerHTML =
+                    `
+                        <div class="card empty">
+                            No notifications.
+                        </div>
+                    `;
+
+                $("notificationTileSub")
+                    .textContent =
+                    "No notifications.";
+
+                return;
+
+            }
+
+
+            const unread =
+                allNotifications.filter(
+                    notification =>
+                        !notification.read
+                ).length;
+
+
+            $("notificationTileSub")
+                .textContent =
+                unread > 0
+                    ? `${unread} unread notification${unread === 1 ? "" : "s"}`
+                    : "All notifications read.";
+
+
+            container.innerHTML =
+                allNotifications
+                    .map(
+                        notification => `
+
+                            <div
+                                class="
+                                    notification
+                                    ${
+                                        notification.read
+                                            ? ""
+                                            : "unread"
+                                    }
+                                "
+                            >
+
+                                <div
+                                    class="notification-title"
+                                >
+                                    ${escapeHTML(
+                                        notification.title
+                                    )}
+                                </div>
+
+                                <div
+                                    class="notification-message"
+                                >
+                                    ${escapeHTML(
+                                        notification.message
+                                    )}
+                                </div>
+
+                                <div
+                                    class="notification-time"
+                                >
+                                    ${formatDate(
+                                        notification.created_at
+                                    )}
+                                </div>
+
+                            </div>
+
+                        `
+                    )
+                    .join("");
+
+
+            /*
+             * Opening the notification page marks
+             * the displayed notifications as read.
+             */
+
+            if (unread > 0) {
+                markNotificationsRead();
+            }
+
+        }
+
+
+        async function markNotificationsRead() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/notifications/read",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    userId:
+                                        currentUser.id
+                                }
+                            )
+                    }
+                );
+
+
+                allNotifications =
+                    allNotifications.map(
+                        notification => ({
+                            ...notification,
+                            read:1
+                        })
+                    );
+
+
+                $("notificationTileSub")
+                    .textContent =
+                    "All notifications read.";
+
+            } catch (error) {
+
+                console.error(
+                    "Mark notifications:",
+                    error
+                );
+
+            }
+
+        }
+        /* =================================================
+           SETTINGS
+        ================================================= */
+
+        function openSettings() {
+
+            showPage(
+                "settingsPage"
+            );
+
+
+            updateSettingsUI();
+
+        }
+
+
+        function updateSettingsUI() {
+
+            const themes = [
+                "black",
+                "white",
+                "maroon",
+                "dark-blue",
+                "purple",
+                "grey"
+            ];
+
+
+            themes.forEach(
+                theme => {
+
+                    const button =
+                        $(
+                            `theme-${theme}`
+                        );
+
+
+                    if (!button) {
+                        return;
+                    }
+
+
+                    button.style.outline =
+                        localStorage.getItem(
+                            "nnr_theme"
+                        ) === theme
+                            ? "2px solid var(--accent)"
+                            : "none";
+
+                }
+            );
+
+        }
+
+
+        function setTheme(
+            theme
+        ) {
+
+            const themes = {
+
+                black: {
+                    bg:"#050505",
+                    panel:"#101010",
+                    panel2:"#171717",
+                    border:"#292929",
+                    text:"#f5f5f5",
+                    muted:"#a0a0a0",
+                    accent:"#ffffff"
+                },
+
+                white: {
+                    bg:"#f4f4f4",
+                    panel:"#ffffff",
+                    panel2:"#eeeeee",
+                    border:"#d0d0d0",
+                    text:"#111111",
+                    muted:"#666666",
+                    accent:"#111111"
+                },
+
+                maroon: {
+                    bg:"#160607",
+                    panel:"#250b0e",
+                    panel2:"#321115",
+                    border:"#542027",
+                    text:"#fff5f6",
+                    muted:"#c9aeb2",
+                    accent:"#ffffff"
+                },
+
+                "dark-blue": {
+                    bg:"#050a14",
+                    panel:"#0b1422",
+                    panel2:"#101c2e",
+                    border:"#20334d",
+                    text:"#f2f7ff",
+                    muted:"#a8b7ca",
+                    accent:"#ffffff"
+                },
+
+                purple: {
+                    bg:"#0c0614",
+                    panel:"#170d23",
+                    panel2:"#211332",
+                    border:"#38234e",
+                    text:"#faf5ff",
+                    muted:"#bbaac7",
+                    accent:"#ffffff"
+                },
+
+                grey: {
+                    bg:"#111111",
+                    panel:"#1c1c1c",
+                    panel2:"#262626",
+                    border:"#3a3a3a",
+                    text:"#f5f5f5",
+                    muted:"#b0b0b0",
+                    accent:"#ffffff"
+                }
+
+            };
+
+
+            const selected =
+                themes[theme] ||
+                themes.black;
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--bg",
+                    selected.bg
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--panel",
+                    selected.panel
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--panel-2",
+                    selected.panel2
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--border",
+                    selected.border
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--text",
+                    selected.text
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--muted",
+                    selected.muted
+                );
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--accent",
+                    selected.accent
+                );
+
+
+            document
+                .querySelector(
+                    'meta[name="theme-color"]'
+                )
+                ?.setAttribute(
+                    "content",
+                    selected.bg
+                );
+
+
+            localStorage.setItem(
+                "nnr_theme",
+                theme
+            );
+
+
+            updateSettingsUI();
+
+        }
+
+
+        function loadTheme() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "nnr_theme"
+                ) ||
+                "black";
+
+
+            setTheme(
+                savedTheme
+            );
+
+        }
+
+
+        async function changeUsername() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const newUsername =
+                prompt(
+                    "Enter your new username:"
+                );
+
+
+            if (
+                !newUsername ||
+                !newUsername.trim()
+            ) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/change-username",
+                        {
+                            method:"POST",
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        userId:
+                                            currentUser.id,
+
+                                        newUsername:
+                                            newUsername.trim()
+                                    }
+                                )
+                        }
+                    );
+
+
+                currentUser.username =
+                    data.user.username;
+
+
+                saveUser();
+
+
+                updateUserUI();
+
+
+                showMessage(
+                    "Username Changed",
+                    `Your username is now @${data.user.username}.`
+                );
+
+            } catch (error) {
+
+                showMessage(
+                    "Username",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           GOVERNMENT / ADMIN
+        ================================================= */
+
+        async function openGovernment() {
+
+            if (!currentUser?.isAdmin) {
+
+                showMessage(
+                    "Government",
+                    "Government access only."
+                );
+
+                return;
+
+            }
+
+
+            showPage(
+                "governmentPage"
+            );
+
+
+            await loadGovernmentMembers();
+
+            await loadGovernmentElections();
+
+        }
+
+
+        async function loadGovernmentMembers() {
+
+            const container =
+                $("governmentMemberList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/admin/members?adminId=${currentUser.id}`
+                    );
+
+
+                const members =
+                    data.members || [];
+
+
+                if (!members.length) {
+
+                    container.innerHTML =
+                        `
+                            <div class="empty">
+                                No members found.
+                            </div>
+                        `;
+
+                    return;
+
+                }
+
+
+                container.innerHTML =
+                    members
+                        .map(
+                            member => `
+
+                                <div
+                                    class="member-row"
+                                >
+
+                                    <div
+                                        class="member-main"
+                                    >
+
+                                        <strong>
+                                            @${escapeHTML(
+                                                member.username
+                                            )}
+                                        </strong>
+
+                                        <div
+                                            class="member-name"
+                                        >
+                                            ${escapeHTML(
+                                                member.first_name
+                                            )}
+                                            ${escapeHTML(
+                                                member.last_name
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div
+                                        class="member-info"
+                                    >
+
+                                        <span>
+                                            Age:
+                                            ${escapeHTML(
+                                                String(
+                                                    member.age ?? ""
+                                                )
+                                            )}
+                                        </span>
+
+                                        <span>
+                                            Gender:
+                                            ${escapeHTML(
+                                                member.gender || ""
+                                            )}
+                                        </span>
+
+                                        <span>
+                                            Balance:
+                                            ${Number(
+                                                member.balance
+                                            ).toLocaleString()}
+                                            KK
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            `
+                        )
+                        .join("");
+
+            } catch (error) {
+
+                container.innerHTML =
+                    `
+                        <div class="empty">
+                            ${escapeHTML(
+                                error.message
+                            )}
+                        </div>
+                    `;
+
+            }
+
+        }
+
+
+        async function governmentGiveKK() {
+
+            const username =
+                prompt(
+                    "Username to give KK to:"
+                );
+
+
+            if (!username) {
+                return;
+            }
+
+
+            const amountText =
+                prompt(
+                    "Amount of KK to give:"
+                );
+
+
+            const amount =
+                Number(
+                    amountText
+                );
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+
+                showMessage(
+                    "Government",
+                    "Enter a valid amount."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/admin/kk/give",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    adminId:
+                                        currentUser.id,
+
+                                    username:
+                                        username.trim(),
+
+                                    amount
+                                }
+                            )
+                    }
+                );
+
+
+                showMessage(
+                    "Government",
+                    `Gave ${amount.toLocaleString()} KK to @${username.trim()}.`
+                );
+
+
+                await loadGovernmentMembers();
+
+            } catch (error) {
+
+                showMessage(
+                    "Government",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        async function governmentTakeKK() {
+
+            const username =
+                prompt(
+                    "Username to take KK from:"
+                );
+
+
+            if (!username) {
+                return;
+            }
+
+
+            const amountText =
+                prompt(
+                    "Amount of KK to take:"
+                );
+
+
+            const amount =
+                Number(
+                    amountText
+                );
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+
+                showMessage(
+                    "Government",
+                    "Enter a valid amount."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/admin/kk/take",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    adminId:
+                                        currentUser.id,
+
+                                    username:
+                                        username.trim(),
+
+                                    amount
+                                }
+                            )
+                    }
+                );
+
+
+                showMessage(
+                    "Government",
+                    `Took ${amount.toLocaleString()} KK from @${username.trim()}.`
+                );
+
+
+                await loadGovernmentMembers();
+
+            } catch (error) {
+
+                showMessage(
+                    "Government",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        async function governmentSendNotification() {
+
+            const username =
+                prompt(
+                    "Username to notify, or type ALL for everyone:"
+                );
+
+
+            if (!username) {
+                return;
+            }
+
+
+            const title =
+                prompt(
+                    "Notification title:"
+                );
+
+
+            if (!title) {
+                return;
+            }
+
+
+            const message =
+                prompt(
+                    "Notification message:"
+                );
+
+
+            if (!message) {
+                return;
+            }
+
+
+            try {
+
+                const broadcast =
+                    username.trim().toUpperCase() ===
+                    "ALL";
+
+
+                await apiFetch(
+                    "/admin/notify",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    adminId:
+                                        currentUser.id,
+
+                                    username:
+                                        broadcast
+                                            ? null
+                                            : username.trim(),
+
+                                    broadcast,
+
+                                    title:
+                                        title.trim(),
+
+                                    message:
+                                        message.trim()
+                                }
+                            )
+                    }
+                );
+
+
+                showMessage(
+                    "Notifications",
+                    broadcast
+                        ? "Notification sent to everyone."
+                        : `Notification sent to @${username.trim()}.`
+                );
+
+            } catch (error) {
+
+                showMessage(
+                    "Notifications",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        async function governmentPostNews() {
+
+            const organization =
+                prompt(
+                    "Organization / station name:"
+                );
+
+
+            if (!organization) {
+                return;
+            }
+
+
+            const title =
+                prompt(
+                    "Article headline:"
+                );
+
+
+            if (!title) {
+                return;
+            }
+
+
+            const content =
+                prompt(
+                    "Article content:"
+                );
+
+
+            if (!content) {
+                return;
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/admin/news",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    adminId:
+                                        currentUser.id,
+
+                                    organization:
+                                        organization.trim(),
+
+                                    title:
+                                        title.trim(),
+
+                                    content:
+                                        content.trim()
+                                }
+                            )
+                    }
+                );
+
+
+                showMessage(
+                    "NNR News",
+                    "News article published."
+                );
+
+
+                await loadNews();
+
+            } catch (error) {
+
+                showMessage(
+                    "NNR News",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        async function governmentCreateElection() {
+
+            const position = prompt("Election position:");
+            if (!position) return;
+
+            const title = prompt("Election title:");
+            if (!title) return;
+
+            const description = prompt("Election description:");
+            if (!description) return;
+
+            try {
+                await apiFetch("/admin/elections", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        adminId: currentUser.id,
+                        position: position.trim(),
+                        title: title.trim(),
+                        description: description.trim()
+                    })
+                });
+
+                showMessage("Elections", "Election created successfully.");
+                await loadElections();
+                await loadGovernmentElections();
+            } catch (error) {
+                showMessage("Elections", error.message);
+            }
+
+        }
+
+
+        /* =================================================
+           GOVERNMENT ELECTION CONTROLS
+        ================================================= */
+
+        async function loadGovernmentElections() {
+
+            const container =
+                $("governmentElectionList");
+
+
+            if (!container) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/elections"
+                    );
+
+
+                const elections =
+                    data.elections || [];
+
+
+                if (!elections.length) {
+
+                    container.innerHTML =
+                        `
+                            <div class="empty">
+                                No elections created.
+                            </div>
+                        `;
+
+                    return;
+
+                }
+
+
+                container.innerHTML =
+                    elections
+                        .map(
+                            election => `
+
+                                <div
+                                    class="card"
+                                >
+
+                                    <div
+                                        class="election-position"
+                                    >
+                                        ${escapeHTML(
+                                            election.position
+                                        )}
+                                    </div>
+
+                                    <h3>
+                                        ${escapeHTML(
+                                            election.title
+                                        )}
+                                    </h3>
+
+                                    <div
+                                        class="member-info"
+                                    >
+
+                                        ${
+                                            (
+                                                election.candidates ||
+                                                []
+                                            )
+                                                .map(
+                                                    candidate => `
+                                                        <span>
+                                                            ${escapeHTML(
+                                                                candidate.name
+                                                            )}:
+                                                            ${Number(
+                                                                candidate.vote_count
+                                                            ).toLocaleString()}
+                                                        </span>
+                                                    `
+                                                )
+                                                .join("")
+                                        }
+
+                                    </div>
+
+                                    <button
+                                        class="secondary-btn"
+                                        type="button"
+                                        onclick="editElectionVotes(${election.id})"
+                                    >
+                                        Change Vote Counts
+                                    </button>
+
+                                </div>
+
+                            `
+                        )
+                        .join("");
+
+            } catch (error) {
+
+                container.innerHTML =
+                    `
+                        <div class="empty">
+                            ${escapeHTML(
+                                error.message
+                            )}
+                        </div>
+                    `;
+
+            }
+
+        }
+
+
+        async function editElectionVotes(
+            electionId
+        ) {
+
+            const election =
+                allElections.find(
+                    item =>
+                        Number(item.id) ===
+                        Number(electionId)
+                );
+
+
+            /*
+             * If the Government page was opened
+             * before the public election list loaded,
+             * fetch it again.
+             */
+
+            let target =
+                election;
+
+
+            if (!target) {
+
+                try {
+
+                    const data =
+                        await apiFetch(
+                            "/elections"
+                        );
+
+
+                    target =
+                        (
+                            data.elections ||
+                            []
+                        ).find(
+                            item =>
+                                Number(item.id) ===
+                                Number(electionId)
+                        );
+
+                } catch (error) {
+
+                    showMessage(
+                        "Elections",
+                        error.message
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            if (!target) {
+                return;
+            }
+
+
+            const candidates =
+                target.candidates || [];
+
+
+            for (
+                const candidate
+                of candidates
+            ) {
+
+                const entered =
+                    prompt(
+                        `Vote count for ${candidate.name}:`,
+                        String(
+                            Number(
+                                candidate.vote_count
+                            )
+                        )
+                    );
+
+
+                if (
+                    entered === null
+                ) {
+                    return;
+                }
+
+
+                const voteCount =
+                    Number(
+                        entered
+                    );
+
+
+                if (
+                    !Number.isInteger(
+                        voteCount
+                    ) ||
+                    voteCount < 0
+                ) {
+
+                    showMessage(
+                        "Elections",
+                        "Vote counts must be whole numbers 0 or greater."
+                    );
+
+                    return;
+
+                }
+
+
+                candidate.new_vote_count =
+                    voteCount;
+
+            }
+
+
+            try {
+
+                for (
+                    const candidate
+                    of candidates
+                ) {
+
+                    await apiFetch(
+                        `/admin/elections/${target.id}/candidates/${candidate.id}`,
+                        {
+                            method:"PUT",
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        adminId:
+                                            currentUser.id,
+
+                                        vote_count:
+                                            candidate.new_vote_count
+                                    }
+                                )
+                        }
+                    );
+
+                }
+
+
+                showMessage(
+                    "Elections",
+                    "Election vote counts updated."
+                );
+
+
+                await loadElections();
+
+                await loadGovernmentElections();
+
+            } catch (error) {
+
+                showMessage(
+                    "Elections",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        function showMessage(
+            title,
+            message
+        ) {
+
+            $("messageModalTitle")
+                .textContent =
+                title;
+
+
+            $("messageModalText")
+                .textContent =
+                message;
+
+
+            openModal(
+                "messageModal"
+            );
+
+        }
+
+
+        function formatDate(
+            value
+        ) {
+
+            if (!value) {
+                return "";
+            }
+
+
+            const date =
+                new Date(
+                    value
+                );
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return String(
+                    value
+                );
+
+            }
+
+
+            return date.toLocaleString();
+
+        }
+        /* =================================================
+           NAVIGATION / APP STARTUP
+        ================================================= */
+
+        function goHome() {
+
+            showPage(
+                "homePage"
+            );
+
+
+            updateUserUI();
+
+        }
+
+
+        function goBackHome() {
+
+            closeAllModals();
+
+            goHome();
+
+        }
+
+
+        function closeAllModals() {
+
+            document
+                .querySelectorAll(
+                    ".modal"
+                )
+                .forEach(
+                    modal =>
+                        modal.classList.remove(
+                            "show"
+                        )
+                );
+
+        }
+
+
+        function updateAdminVisibility() {
+
+            const governmentTile =
+                $("governmentTile");
+
+
+            const governmentPage =
+                $("governmentPage");
+
+
+            if (
+                currentUser &&
+                currentUser.isAdmin
+            ) {
+
+                if (governmentTile) {
+                    governmentTile.classList.remove(
+                        "hidden"
+                    );
+                }
+
+                if (governmentPage) {
+                    governmentPage.classList.remove(
+                        "hidden"
+                    );
+                }
+
+            } else {
+
+                if (governmentTile) {
+                    governmentTile.classList.add(
+                        "hidden"
+                    );
+                }
+
+                if (governmentPage) {
+                    governmentPage.classList.add(
+                        "hidden"
+                    );
+                }
+
+            }
+
+        }
+
+
+        function updateWalletRequestButton() {
+
+            const button =
+                $("requestKKButton");
+
+
+            if (!button) {
+                return;
+            }
+
+
+            button.disabled =
+                !currentUser;
+
+        }
+
+
+        /* =================================================
+           POLLING
+        ================================================= */
+
+        let refreshTimer =
+            null;
+
+
+        function startPolling() {
+
+            stopPolling();
+
+
+            refreshTimer =
+                setInterval(
+                    async () => {
+
+                        if (!currentUser) {
+                            return;
+                        }
+
+
+                        try {
+
+                            await refreshUser();
+
+
+                            await loadKKRequests();
+
+
+                            await loadNotifications();
+
+
+                            /*
+                             * Only refresh visible
+                             * content when appropriate.
+                             */
+
+                            const activePage =
+                                document.querySelector(
+                                    ".page.active"
+                                );
+
+
+                            if (
+                                activePage?.id ===
+                                "walletPage"
+                            ) {
+
+                                await loadTransactions();
+
+                            }
+
+
+                            if (
+                                activePage?.id ===
+                                "newsPage"
+                            ) {
+
+                                await loadNews();
+
+                            }
+
+
+                            if (
+                                activePage?.id ===
+                                "electionsPage"
+                            ) {
+
+                                await loadElections();
+
+                            }
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "Background refresh:",
+                                error
+                            );
+
+                        }
+
+                    },
+                    15000
+                );
+
+        }
+
+
+        function stopPolling() {
+
+            if (
+                refreshTimer !== null
+            ) {
+
+                clearInterval(
+                    refreshTimer
+                );
+
+
+                refreshTimer =
+                    null;
+
+            }
+
+        }
+
+
+        /* =================================================
+           MODAL / BUTTON HELPERS
+        ================================================= */
+
+        function setupModalClosing() {
+
+            document
+                .querySelectorAll(
+                    ".modal"
+                )
+                .forEach(
+                    modal => {
+
+                        modal.addEventListener(
+                            "click",
+                            event => {
+
+                                if (
+                                    event.target ===
+                                    modal
+                                ) {
+
+                                    modal.classList.remove(
+                                        "show"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            document.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        closeAllModals();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        function setupButtonHoverBehavior() {
+
+            /*
+             * The CSS handles most hover behavior.
+             * These classes make sure buttons remain
+             * readable when the White theme is selected.
+             */
+
+            document
+                .querySelectorAll(
+                    "button"
+                )
+                .forEach(
+                    button => {
+
+                        button.addEventListener(
+                            "mouseenter",
+                            () => {
+
+                                button.dataset
+                                    .previousBackground =
+                                    button.style
+                                        .backgroundColor;
+
+                            }
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =================================================
+           FORM VALIDATION
+        ================================================= */
+
+        function validatePIN(
+            pin
+        ) {
+
+            return /^\d{6}$/.test(
+                String(pin)
+            );
+
+        }
+
+
+        function validateUsername(
+            username
+        ) {
+
+            return /^[A-Za-z0-9_]{3,24}$/.test(
+                String(username)
+            );
+
+        }
+
+
+        function validateAmount(
+            amount
+        ) {
+
+            const value =
+                Number(amount);
+
+
+            return (
+                Number.isFinite(value) &&
+                value > 0
+            );
+
+        }
+
+
+        /* =================================================
+           FORM EVENT HANDLERS
+        ================================================= */
+
+        function setupForms() {
+
+            const loginForm =
+                $("loginForm");
+
+
+            if (loginForm) {
+
+                loginForm.addEventListener(
+                    "submit",
+                    event => {
+
+                        event.preventDefault();
+
+                        login();
+
+                    }
+                );
+
+            }
+
+
+            const registerForm =
+                $("registerForm");
+
+
+            if (registerForm) {
+
+                registerForm.addEventListener(
+                    "submit",
+                    event => {
+
+                        event.preventDefault();
+
+                        register();
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           GLOBAL CLICK HANDLERS
+        ================================================= */
+
+        function setupGlobalHandlers() {
+
+            /*
+             * Prevent disabled buttons from accidentally
+             * triggering parent click handlers.
+             */
+
+            document.addEventListener(
+                "click",
+                event => {
+
+                    const button =
+                        event.target.closest(
+                            "button"
+                        );
+
+
+                    if (
+                        button &&
+                        button.disabled
+                    ) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           INITIALIZATION
+        ================================================= */
+
+        async function initializeApp() {
+
+            loadTheme();
+
+            setupModalClosing();
+
+            setupForms();
+
+            setupButtonHoverBehavior();
+
+            setupGlobalHandlers();
+
+
+            const saved =
+                loadSavedUser();
+
+
+            if (!saved) {
+
+                show(
+                    "authScreen"
+                );
+
+                hide(
+                    "appScreen"
+                );
+
+
+                showLogin();
+
+                return;
+
+            }
+
+
+            try {
+
+                await refreshUser();
+
+
+                if (!currentUser) {
+                    throw new Error(
+                        "Session expired."
+                    );
+                }
+
+
+                enterApplication();
+
+
+                await refreshAll();
+
+
+                startPolling();
+
+            } catch (error) {
+
+                console.error(
+                    "Startup:",
+                    error
+                );
+
+
+                logout();
+
+            }
+
+        }
+
+
+        /* =================================================
+           PAGE VISIBILITY
+        ================================================= */
+
+        document.addEventListener(
+            "visibilitychange",
+            () => {
+
+                if (
+                    document.hidden
+                ) {
+
+                    stopPolling();
+
+                } else if (
+                    currentUser
+                ) {
+
+                    startPolling();
+
+                    refreshAll();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           ONLINE / OFFLINE HANDLING
+        ================================================= */
+
+        window.addEventListener(
+            "online",
+            async () => {
+
+                if (!currentUser) {
+                    return;
+                }
+
+
+                await refreshAll();
+
+                startPolling();
+
+            }
+        );
+
+
+        window.addEventListener(
+            "offline",
+            () => {
+
+                showMessage(
+                    "Connection",
+                    "The device is currently offline. NNR will reconnect automatically."
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           EXPOSE FUNCTIONS FOR HTML BUTTONS
+        ================================================= */
+
+        window.showLogin =
+            showLogin;
+
+        window.showRegister =
+            showRegister;
+
+        window.login =
+            login;
+
+        window.register =
+            register;
+
+        window.logout =
+            logout;
+
+        window.goHome =
+            goHome;
+
+        window.goBackHome =
+            goBackHome;
+
+        window.openWallet =
+            openWallet;
+
+        window.sendKK =
+            sendKK;
+
+        window.requestKK =
+            requestKK;
+
+        window.openNews =
+            openNews;
+
+        window.openElections =
+            openElections;
+
+        window.openElectionDetail =
+            openElectionDetail;
+
+        window.openNotifications =
+            openNotifications;
+
+        window.openSettings =
+            openSettings;
+
+        window.setTheme =
+            setTheme;
+
+        window.changeUsername =
+            changeUsername;
+
+        window.openGovernment =
+            openGovernment;
+
+        window.governmentGiveKK =
+            governmentGiveKK;
+
+        window.governmentTakeKK =
+            governmentTakeKK;
+
+        window.governmentSendNotification =
+            governmentSendNotification;
+
+        window.governmentPostNews =
+            governmentPostNews;
+
+        window.governmentCreateElection =
+            governmentCreateElection;
+
+        window.editElectionVotes =
+            editElectionVotes;
+
+        window.openRequest =
+            openRequest;
+
+        window.acceptCurrentRequest =
+            acceptCurrentRequest;
+
+        window.closeModal =
+            closeModal;
+
+        window.closeAllModals =
+            closeAllModals;
+
+
+        /* =================================================
+           START
+        ================================================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeApp
+        );
+        /* =================================================
+           FINAL UI HELPERS
+        ================================================= */
+
+        function refreshHomeTiles() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const walletSub =
+                $("walletTileSub");
+
+
+            if (walletSub) {
+
+                walletSub.textContent =
+                    `${Number(
+                        currentUser.balance || 0
+                    ).toLocaleString()} KK`;
+
+            }
+
+
+            const welcomeName =
+                $("welcomeName");
+
+
+            if (welcomeName) {
+
+                welcomeName.textContent =
+                    currentUser.first_name ||
+                    currentUser.username;
+
+            }
+
+
+            const accountSub =
+                $("accountTileSub");
+
+
+            if (accountSub) {
+
+                accountSub.textContent =
+                    `@${currentUser.username}`;
+
+            }
+
+
+            updateAdminVisibility();
+
+        }
+
+
+        async function refreshDashboard() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                await refreshUser();
+
+                refreshHomeTiles();
+
+            } catch (error) {
+
+                console.error(
+                    "Dashboard refresh:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           KK DASHBOARD
+        ================================================= */
+
+        async function refreshWallet() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            updateWalletBalance();
+
+            await loadTransactions();
+
+            await loadKKRequests();
+
+            updateWalletRequestButton();
+
+        }
+
+
+        /* =================================================
+           NEWS TILE
+        ================================================= */
+
+        async function refreshNewsTile() {
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/news"
+                    );
+
+
+                allNews =
+                    data.news || [];
+
+
+                const tile =
+                    $("newsTileSub");
+
+
+                if (!tile) {
+                    return;
+                }
+
+
+                if (!allNews.length) {
+
+                    tile.textContent =
+                        "No articles yet.";
+
+                    return;
+
+                }
+
+
+                const newest =
+                    allNews[0];
+
+
+                tile.textContent =
+                    newest.title ||
+                    "Latest NNR news.";
+
+            } catch (error) {
+
+                console.error(
+                    "News tile:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           ELECTION TILE
+        ================================================= */
+
+        async function refreshElectionTile() {
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        "/elections"
+                    );
+
+
+                allElections =
+                    data.elections || [];
+
+
+                const tile =
+                    $("electionsTileSub");
+
+
+                if (!tile) {
+                    return;
+                }
+
+
+                if (!allElections.length) {
+
+                    tile.textContent =
+                        "No active elections.";
+
+                    return;
+
+                }
+
+
+                tile.textContent =
+                    `${allElections.length} election${
+                        allElections.length === 1
+                            ? ""
+                            : "s"
+                    } available.`;
+
+            } catch (error) {
+
+                console.error(
+                    "Election tile:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           NOTIFICATION TILE
+        ================================================= */
+
+        async function refreshNotificationTile() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            try {
+
+                const data =
+                    await apiFetch(
+                        `/notifications/${currentUser.id}`
+                    );
+
+
+                allNotifications =
+                    data.notifications || [];
+
+
+                const unread =
+                    allNotifications.filter(
+                        notification =>
+                            !notification.read
+                    ).length;
+
+
+                const tile =
+                    $("notificationTileSub");
+
+
+                if (!tile) {
+                    return;
+                }
+
+
+                if (unread === 0) {
+
+                    tile.textContent =
+                        "No unread notifications.";
+
+                } else {
+
+                    tile.textContent =
+                        `${unread} unread notification${
+                            unread === 1
+                                ? ""
+                                : "s"
+                        }.`;
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Notification tile:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           FULL DASHBOARD REFRESH
+        ================================================= */
+
+        async function refreshDashboardTiles() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            refreshHomeTiles();
+
+
+            await Promise.allSettled(
+                [
+                    refreshNewsTile(),
+                    refreshElectionTile(),
+                    refreshNotificationTile()
+                ]
+            );
+
+        }
+
+
+        /* =================================================
+           OVERRIDE REFRESH ALL
+        ================================================= */
+
+        const originalRefreshAll =
+            refreshAll;
+
+
+        refreshAll =
+            async function () {
+
+                try {
+
+                    await originalRefreshAll();
+
+
+                    await refreshDashboardTiles();
+
+                    await refreshWallet();
+
+                } catch (error) {
+
+                    console.error(
+                        "Full refresh:",
+                        error
+                    );
+
+                }
+
+            };
+
+
+        /* =================================================
+           QUICK ACTIONS
+        ================================================= */
+
+        function quickSendKK() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const username =
+                prompt(
+                    "Username to send KK to:"
+                );
+
+
+            if (!username) {
+                return;
+            }
+
+
+            const amountText =
+                prompt(
+                    "Amount of KK to send:"
+                );
+
+
+            if (!amountText) {
+                return;
+            }
+
+
+            const amount =
+                Number(
+                    amountText
+                );
+
+
+            if (
+                !validateAmount(
+                    amount
+                )
+            ) {
+
+                showMessage(
+                    "KK Wallet",
+                    "Please enter a valid positive amount."
+                );
+
+                return;
+
+            }
+
+
+            sendKKDirect(
+                username.trim(),
+                amount
+            );
+
+        }
+
+
+        async function sendKKDirect(
+            username,
+            amount
+        ) {
+
+            try {
+
+                await apiFetch(
+                    "/transfer",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    senderId:
+                                        currentUser.id,
+
+                                    receiverUsername:
+                                        username,
+
+                                    amount
+                                }
+                            )
+                    }
+                );
+
+
+                await refreshUser();
+
+                await loadTransactions();
+
+                await refreshDashboardTiles();
+
+
+                showMessage(
+                    "KK Wallet",
+                    `Sent ${amount.toLocaleString()} KK to @${username}.`
+                );
+
+            } catch (error) {
+
+                showMessage(
+                    "KK Wallet",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        async function quickRequestKK() {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const username =
+                prompt(
+                    "Username to request KK from:"
+                );
+
+
+            if (!username) {
+                return;
+            }
+
+
+            const amountText =
+                prompt(
+                    "Amount of KK to request:"
+                );
+
+
+            if (!amountText) {
+                return;
+            }
+
+
+            const amount =
+                Number(
+                    amountText
+                );
+
+
+            if (
+                !validateAmount(
+                    amount
+                )
+            ) {
+
+                showMessage(
+                    "KK Wallet",
+                    "Please enter a valid positive amount."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await apiFetch(
+                    "/kk/request",
+                    {
+                        method:"POST",
+
+                        body:
+                            JSON.stringify(
+                                {
+                                    requesterId:
+                                        currentUser.id,
+
+                                    username:
+                                        username.trim(),
+
+                                    amount
+                                }
+                            )
+                    }
+                );
+
+
+                showMessage(
+                    "KK Request",
+                    `Requested ${amount.toLocaleString()} KK from @${username.trim()}.`
+                );
+
+
+            } catch (error) {
+
+                showMessage(
+                    "KK Request",
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           ADMIN QUICK ACTIONS
+        ================================================= */
+
+        function requireAdminAction(
+            callback
+        ) {
+
+            if (
+                !currentUser ||
+                !currentUser.isAdmin
+            ) {
+
+                showMessage(
+                    "Government",
+                    "This action is available only to Government."
+                );
+
+                return;
+
+            }
+
+
+            callback();
+
+        }
+
+
+        function adminGiveQuick() {
+
+            requireAdminAction(
+                governmentGiveKK
+            );
+
+        }
+
+
+        function adminTakeQuick() {
+
+            requireAdminAction(
+                governmentTakeKK
+            );
+
+        }
+
+
+        function adminNewsQuick() {
+
+            requireAdminAction(
+                governmentPostNews
+            );
+
+        }
+
+
+        function adminNotificationQuick() {
+
+            requireAdminAction(
+                governmentSendNotification
+            );
+
+        }
+
+
+        /* =================================================
+           PUBLIC GLOBAL FUNCTIONS
+        ================================================= */
+
+        window.refreshWallet =
+            refreshWallet;
+
+        window.refreshDashboard =
+            refreshDashboard;
+
+        window.quickSendKK =
+            quickSendKK;
+
+        window.quickRequestKK =
+            quickRequestKK;
+
+        window.adminGiveQuick =
+            adminGiveQuick;
+
+        window.adminTakeQuick =
+            adminTakeQuick;
+
+        window.adminNewsQuick =
+            adminNewsQuick;
+
+        window.adminNotificationQuick =
+            adminNotificationQuick;
+
+
+        /* =================================================
+           ERROR HANDLING
+        ================================================= */
+
+        window.addEventListener(
+            "error",
+            event => {
+
+                console.error(
+                    "NNR frontend error:",
+                    event.error ||
+                    event.message
+                );
+
+            }
+        );
+
+
+        window.addEventListener(
+            "unhandledrejection",
+            event => {
+
+                console.error(
+                    "NNR promise error:",
+                    event.reason
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           RESTORE THEME IMMEDIATELY
+        ================================================= */
+
+        loadTheme();
+    </script>
+</body>
+</html>
